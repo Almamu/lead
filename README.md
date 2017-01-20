@@ -5,7 +5,7 @@ Recent versions of the makefile may try to delete system files on `sudo make uni
 
 *lead* provides hot-corners for your desktop, notably for openbox, awesome, i3 and other window managers.
 
-![Screenshot of lead](https://github.com/nukura/lead/blob/master/screenshot.png)
+![Screenshot of lead](https://github.com/kernladung/lead/blob/master/screenshot.png)
 > Despite the screenshot, the sensors are only 1px in size and invisible.
 
 
