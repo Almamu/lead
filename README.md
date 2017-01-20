@@ -22,7 +22,7 @@
 
 # Build it
 
-*lead* uses [clang](http://clang.llvm.org/) as compiler and [ninja](https://github.com/ninja-build/ninja) as build-tool. 
+*lead* uses [clang](http://clang.llvm.org/) as compiler, [g++](https://gcc.gnu.org/) as linker and [ninja](https://github.com/ninja-build/ninja) as build-tool. 
 
 To build *lead* open terminal in the root folder of the repository and:
 
