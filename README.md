@@ -1,8 +1,3 @@
-# ATTENTION
-Recent versions of the makefile may try to delete system files on `sudo make uninstall`! Dont use existing cmake-files and delete generated makefiles!
-
-# .
-
 *lead* provides hot-corners for your desktop, notably for openbox, awesome, i3 and other window managers.
 
 ![Screenshot of lead](https://github.com/kernladung/lead/blob/master/screenshot.png)
@@ -27,7 +22,7 @@ Recent versions of the makefile may try to delete system files on `sudo make uni
 
 # Build it
 
-*lead* uses [ninja](https://github.com/ninja-build/ninja) as build-tool. Open terminal in the root folder of the repository and:
+Per default *lead* uses [clang](http://clang.llvm.org/) as compiler and [ninja](https://github.com/ninja-build/ninja) as build-tool. Open terminal in the root folder of the repository and:
 
     $ ninja
 
