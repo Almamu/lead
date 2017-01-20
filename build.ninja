@@ -16,7 +16,7 @@ rule moc
 build build/lead.moc.cpp: moc src/lead.h
 build build/sensor.moc.cpp: moc src/sensor.h
 
-build build/main.o: cpp src/main.cpps
+build build/main.o: cpp src/main.cpp
 build build/lead.o: cpp src/lead.cpp
 build build/sensor.o: cpp src/sensor.cpp
 
