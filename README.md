@@ -22,7 +22,9 @@
 
 # Build it
 
-Per default *lead* uses [clang](http://clang.llvm.org/) as compiler and [ninja](https://github.com/ninja-build/ninja) as build-tool. Open terminal in the root folder of the repository and:
+*lead* uses [clang](http://clang.llvm.org/) as compiler and [ninja](https://github.com/ninja-build/ninja) as build-tool. 
+
+To build *lead* open terminal in the root folder of the repository and:
 
     $ ninja
 
