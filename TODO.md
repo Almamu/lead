@@ -1,0 +1,2 @@
+- show screennames to identify screen
+- add commands to run if mouse leaves sensor
