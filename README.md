@@ -40,6 +40,8 @@ A build `kernladung.lead` is provided in the build dir. It was build on my arch6
 
 # Install it
 
+(in development, currently does not work!)
+
     $ sudo ninja install
 
 
