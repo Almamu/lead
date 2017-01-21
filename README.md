@@ -1,6 +1,6 @@
 *lead* provides hot-corners for your desktop, notably for openbox, awesome, i3 and other window managers.
 
-![Screenshot of lead](https://github.com/kernladung/lead/blob/master/screenshot.png)
+![Screenshot of lead](https://github.com/mlde/lead/blob/master/screenshot.png)
 > Despite the screenshot, the sensors are only 1px in size and invisible.
 
 
@@ -13,7 +13,7 @@
 
 # Get it
 
-- clone the repository with `$ git clone https://github.com/kernladung/lead`
+- clone the repository with `$ git clone https://github.com/mlde/lead`
 
 **or**
 
@@ -24,7 +24,7 @@
 
 *lead* uses [clang](http://clang.llvm.org/) as compiler, [g++](https://gcc.gnu.org/) as linker and [ninja](https://github.com/ninja-build/ninja) as build-tool. 
 
-To build *lead* open terminal in the root folder of the repository and:
+To build *lead* open a terminal in the root folder of the repository and:
 
     $ ninja
 
@@ -35,7 +35,7 @@ To build *lead* open terminal in the root folder of the repository and:
 
 ### Build
 
-A build `kernladung.lead` is provided in the build dir. It was build on my arch64 system.
+A build `mlde.lead` is provided in the build dir. It was build on my arch64 system.
 
 
 # Install it
@@ -49,10 +49,10 @@ A build `kernladung.lead` is provided in the build dir. It was build on my arch6
 
 On the first run lead will look into these dirs for a conf-file. The first one found will be used.
 
-    ~/.config/kernladung/lead.conf
-    /etc/xdg/kernladung/lead.conf
+    ~/.config/mlde/lead.conf
+    /etc/xdg/mlde/lead.conf
 
-If none of these exists, it will create `~/.config/kernladung/lead.conf` with default values for each screen, ie:
+If none of these exists, it will create `~/.config/mlde/lead.conf` with default values for each screen, ie:
 
     [eDP1]
     bottom=
@@ -73,7 +73,7 @@ To enable a action for a sensor, simply add a command to the corner or side:
     left=
     right=
     top=
-    topLeft=kernladung.californium toggle
+    topLeft=mlde.californium toggle
     topRight=skippy-xd
 
 Used config-files and theme-files are monitored and changes are applied automatically.
@@ -81,11 +81,11 @@ Used config-files and theme-files are monitored and changes are applied automati
 
 # Use it
 
-*lead* provides the binary `kernladung.lead` which creates sensors for each configured corner or side.
+*lead* provides the binary `mlde.lead` which creates sensors for each configured corner or side.
 
 Start *lead* as background process:
 
-    $ kernladung.lead &
+    $ mlde.lead &
 
 
 # Drawbacks

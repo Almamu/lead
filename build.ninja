@@ -16,11 +16,14 @@ rule moc
 build build/lead.moc.cpp: moc src/lead.h
 build build/sensor.moc.cpp: moc src/sensor.h
 
+
 build build/main.o: cpp src/main.cpp
 build build/lead.o: cpp src/lead.cpp
 build build/sensor.o: cpp src/sensor.cpp
 
+
 build build/lead.moc.o: cpp build/lead.moc.cpp
 build build/sensor.moc.o: cpp build/sensor.moc.cpp
 
-build build/kernladung.lead: link build/main.o build/lead.o build/sensor.o build/lead.moc.o build/sensor.moc.o
+
+build build/mlde.lead: link build/main.o build/lead.o build/sensor.o build/lead.moc.o build/sensor.moc.o

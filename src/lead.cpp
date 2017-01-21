@@ -30,12 +30,12 @@ SOFTWARE.
 #include <QFileSystemWatcher>
 
 
-namespace kernladung {
+namespace mlde {
 
 
 Lead::Lead(int &argc, char** argv) :
     QApplication(argc, argv),
-    settings("kernladung", "lead"),
+    settings("mlde", "lead"),
     watcher()
 {   
     loadScreens();
@@ -61,7 +61,7 @@ Lead::watchSettings()
 void
 Lead::fileChanged(QString fileName)
 {
-    qDebug() << "kernladung::Lead::fileChanged() fileName: " << fileName;
+    qDebug() << "mlde::Lead::fileChanged() fileName: " << fileName;
 
     // this reloads the settings from the file
     settings.sync();
@@ -113,7 +113,7 @@ Lead::loadScreens()
 void
 Lead::loadScreen(QScreen* screen)
 {
-    qDebug() << "kernladung::Lead::loadScreen() " << screen->name();
+    qDebug() << "mlde::Lead::loadScreen() " << screen->name();
 
     QRect rec = screen->geometry();
     
@@ -137,7 +137,7 @@ Lead::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 
     if (!settings.contains(key) )
     {
-        qDebug() << "kernladung::Lead::loadSensor() key " << name << " not found";
+        qDebug() << "mlde::Lead::loadSensor() key " << name << " not found";
         
         // restore missing key
         settings.setValue(key, QString());
@@ -146,7 +146,7 @@ Lead::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 
     if (settings.value(key).toString().isEmpty())
     {
-        qDebug() << "kernladung::Lead::loadSensor() key " << name << " is empty";
+        qDebug() << "mlde::Lead::loadSensor() key " << name << " is empty";
         return;
     }
     

@@ -34,7 +34,7 @@ SOFTWARE.
 #include <QFileSystemWatcher>
 
 
-namespace kernladung {
+namespace mlde {
 
 
 class Lead : public QApplication

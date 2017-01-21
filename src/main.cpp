@@ -30,7 +30,7 @@ SOFTWARE.
 int
 main(int argc, char *argv[])
 {
-    kernladung::Lead lead(argc, argv);
+    mlde::Lead lead(argc, argv);
 
     return lead.exec();
 }
