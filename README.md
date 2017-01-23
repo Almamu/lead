@@ -73,7 +73,7 @@ To enable a action for a sensor, simply add a command to the corner or side:
     left=
     right=
     top=
-    topLeft=mlde.californium toggle
+    topLeft=mlde-californium toggle
     topRight=skippy-xd
 
 Used config-files and theme-files are monitored and changes are applied automatically.

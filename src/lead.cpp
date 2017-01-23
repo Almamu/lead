@@ -52,6 +52,7 @@ Lead::~Lead()
 void
 Lead::watchSettings()
 {    
+	qDebug() << settings.fileName();
     watcher.addPath(settings.fileName());
 
     connect(&watcher, SIGNAL(fileChanged(QString)), this, SLOT(fileChanged(QString)));
