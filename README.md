@@ -81,7 +81,7 @@ Used config-files and theme-files are monitored and changes are applied automati
 
 # Use it
 
-*lead* provides the binary `mlde.lead` which creates sensors for each configured corner or side.
+*lead* provides the binary `mlde-lead` which creates sensors for each configured corner or side.
 
 Start *lead* as background process:
 
