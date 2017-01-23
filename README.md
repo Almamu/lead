@@ -35,12 +35,12 @@ To build *lead* open a terminal in the root folder of the repository and:
 
 ### Build
 
-A build `mlde.lead` is provided in the build dir. It was build on my arch64 system.
+A build `mlde-lead` is provided in `data/usr/bin/mlde-lead`. It was build on my arch64 system.
 
 
 # Install it
 
-(in development, currently does not work!)
+To install *lead* open a terminal in the root folder of the repository and:
 
     $ sudo ninja install
 
@@ -85,8 +85,13 @@ Used config-files and theme-files are monitored and changes are applied automati
 
 Start *lead* as background process:
 
-    $ mlde.lead &
+    $ mlde-lead &
 
+# Uninstall it
+
+To uninstall *lead* open a terminal in the root folder of the repository and:
+
+    $ sudo ninja uninstall
 
 # Drawbacks
 
