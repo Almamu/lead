@@ -22,11 +22,11 @@
 
 # Build it
 
-*lead* uses [clang](http://clang.llvm.org/) as compiler, [g++](https://gcc.gnu.org/) as linker and [ninja](https://github.com/ninja-build/ninja) as build-tool. 
+*lead* uses [clang](http://clang.llvm.org/) as compiler, [g++](https://gcc.gnu.org/) as linker and [make](https://www.gnu.org/software/make/) as build-tool. 
 
 To build *lead* open a terminal in the root folder of the repository and:
 
-    $ ninja
+    $ make
 
 ### Dependencies
 - Qt5Widgets 
@@ -42,7 +42,7 @@ A build `mlde-lead` is provided in `data/usr/bin/mlde-lead`. It was build on my 
 
 To install *lead* open a terminal in the root folder of the repository and:
 
-    $ sudo ninja install
+    $ sudo make install
 
 
 # Configure it
@@ -91,7 +91,7 @@ Start *lead* as background process:
 
 To uninstall *lead* open a terminal in the root folder of the repository and:
 
-    $ sudo ninja uninstall
+    $ sudo make uninstall
 
 # Drawbacks
 
