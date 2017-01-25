@@ -4,6 +4,7 @@ INCLUDES = -Isrc -I/usr/include -I/usr/include/qt -I/usr/include/qt/QtWidgets -I
 COMPILER = clang -std=c++11 -Wall -O3 -fPIC -MMD $(INCLUDES) -c $< -o $@
 MOC = moc $(INCLUDES) -o $@ $<
 LINKER = g++ -o $@ $? -lQt5Xdg -lQt5Widgets -lQt5Gui -lQt5Core
+MKDIR = mkdir -p $(dir $@)
 
 
 # this prevents make from deleting the generated moc_*.cpp files
@@ -12,15 +13,19 @@ LINKER = g++ -o $@ $? -lQt5Xdg -lQt5Widgets -lQt5Gui -lQt5Core
 
 
 data/usr/bin/mlde-lead: build/lead.o build/sensor.o build/main.o build/moc_lead.o build/moc_sensor.o
+	$(MKDIR)
 	$(LINKER)
 
 build/%.o: src/%.cpp
+	$(MKDIR)
 	$(COMPILER)
 
 build/moc_%.o: build/moc_%.cpp
+	$(MKDIR)
 	$(COMPILER)
 
 build/moc_%.cpp: src/%.h
+	$(MKDIR)
 	$(MOC)
 
 -include build/*.d
@@ -29,8 +34,8 @@ build/moc_%.cpp: src/%.h
 ######  CLEAN  ######
 
 clean:
-	rm build/*
-	rm data/usr/bin/mlde-lead
+	rm -f build/*
+	rm -f data/usr/bin/mlde-lead
 
 
 ######  INSTALL  ######
@@ -42,7 +47,7 @@ install:
 ######  UNINSTALL  ######
 
 uninstall:
-	rm /usr/bin/mlde-lead
+	rm -f /usr/bin/mlde-lead
 
 
 .PHONY: clean install uninstall
