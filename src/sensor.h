@@ -30,7 +30,6 @@ SOFTWARE.
 #include <QScreen>
 
 
-namespace mlde {
 namespace lead {
 
 
@@ -51,4 +50,4 @@ private:
 };
 
 
-}} // namespace
+} // namespace

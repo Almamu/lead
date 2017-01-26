@@ -12,7 +12,7 @@ MKDIR = mkdir -p $(dir $@)
 .SECONDARY:
 
 
-data/usr/bin/mlde-lead: build/lead.o build/sensor.o build/main.o build/moc_lead.o build/moc_sensor.o
+data/usr/bin/lead: build/lead.o build/sensor.o build/main.o build/moc_lead.o build/moc_sensor.o
 	$(MKDIR)
 	$(LINKER)
 
@@ -35,7 +35,7 @@ build/moc_%.cpp: src/%.h
 
 clean:
 	rm -f build/*
-	rm -f data/usr/bin/mlde-lead
+	rm -f data/usr/bin/lead
 
 
 ######  INSTALL  ######
@@ -47,7 +47,7 @@ install:
 ######  UNINSTALL  ######
 
 uninstall:
-	rm -f /usr/bin/mlde-lead
+	rm -f /usr/bin/lead
 
 
 .PHONY: clean install uninstall

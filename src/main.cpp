@@ -24,13 +24,12 @@ SOFTWARE.
 
 
 #include "lead.h"
-#include <QApplication>
 
 
 int
 main(int argc, char *argv[])
 {
-    mlde::Lead lead(argc, argv);
+    Lead lead(argc, argv);
 
     return lead.exec();
 }

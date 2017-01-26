@@ -29,14 +29,13 @@ SOFTWARE.
 #include <QProcess>
 
 
-namespace mlde {
 namespace lead {
 
 
 Sensor::Sensor(int x, int y, int w, int h, QString action):
     QWidget()
 {
-    qDebug() << "mlde::lead::Sensor() " << x << "," << y << "," << w << "," << h << " : " << action;
+    qDebug() << "lead::Sensor() " << x << "," << y << "," << w << "," << h << " : " << action;
 
     this->action = action;    
 
@@ -56,10 +55,10 @@ Sensor::~Sensor()
 void
 Sensor::enterEvent(QEvent * event)
 {
-    qDebug() << "mlde::lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " action: " << this->action;
+    qDebug() << "lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " action: " << this->action;
 
     QProcess::startDetached(action);
 }
 
 
-}} // namespace
+} // namespace

@@ -35,7 +35,7 @@ To build *lead* open a terminal in the root folder of the repository and:
 
 ### Build
 
-A build `mlde-lead` is provided in `data/usr/bin/mlde-lead`. It was build on my arch64 system.
+A build `lead` is provided in `data/usr/bin/`. It was build on my arch64 system.
 
 
 # Install it
@@ -49,10 +49,10 @@ To install *lead* open a terminal in the root folder of the repository and:
 
 On the first run lead will look into these dirs for a conf-file. The first one found will be used.
 
-    ~/.config/mlde/lead.conf
-    /etc/xdg/mlde/lead.conf
+    ~/.config/lead/lead.conf
+    /etc/xdg/lead/lead.conf
 
-If none of these exists, it will create `~/.config/mlde/lead.conf` with default values for each screen, ie:
+If none of these exists, it will create `~/.config/lead/lead.conf` with default values for each screen, ie:
 
     [eDP1]
     bottom=
@@ -73,7 +73,7 @@ To enable a action for a sensor, simply add a command to the corner or side:
     left=
     right=
     top=
-    topLeft=mlde-californium toggle
+    topLeft=californium toggle
     topRight=skippy-xd
 
 Used config-files and theme-files are monitored and changes are applied automatically.
@@ -81,11 +81,11 @@ Used config-files and theme-files are monitored and changes are applied automati
 
 # Use it
 
-*lead* provides the binary `mlde-lead` which creates sensors for each configured corner or side.
+*lead* provides the binary `lead` which creates sensors for each configured corner or side.
 
 Start *lead* as background process:
 
-    $ mlde-lead &
+    $ lead &
 
 # Uninstall it
 

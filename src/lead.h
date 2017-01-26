@@ -34,9 +34,6 @@ SOFTWARE.
 #include <QFileSystemWatcher>
 
 
-namespace mlde {
-
-
 class Lead : public QApplication
 {
     Q_OBJECT
@@ -62,6 +59,3 @@ public slots:
     void fileChanged(QString fileName);
 
 };
-
-
-} // namespace
