@@ -1,4 +1,5 @@
 /*
+
 MIT License
 
 Copyright (c) 2017 Noah Andreas
@@ -20,17 +21,21 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 */
 
 
-#include "lead.h"
+#include "app.h"
 #include "sensor.h"
 #include <QDebug>
 #include <QScreen>
 #include <QFileSystemWatcher>
 
 
-Lead::Lead(int &argc, char** argv) :
+namespace Lead {
+
+
+App::App(int &argc, char** argv) :
     QApplication(argc, argv),
     settings("lead", "lead"),
     watcher()
@@ -40,14 +45,14 @@ Lead::Lead(int &argc, char** argv) :
 }
 
 
-Lead::~Lead()
+App::~App()
 {
     qDeleteAll(sensors);
 }
 
 
 void
-Lead::watchSettings()
+App::watchSettings()
 {    
     watcher.addPath(settings.fileName());
 
@@ -56,9 +61,9 @@ Lead::watchSettings()
 
 
 void
-Lead::fileChanged(QString fileName)
+App::fileChanged(QString fileName)
 {
-    qDebug() << "Lead::fileChanged() fileName: " << fileName;
+    qDebug() << "App::fileChanged() fileName: " << fileName;
 
     // this reloads the settings from the file
     settings.sync();
@@ -73,14 +78,14 @@ Lead::fileChanged(QString fileName)
 
 
 void
-Lead::screenAdded(QScreen* screen)
+App::screenAdded(QScreen* screen)
 {
     loadScreen(screen);
 }
 
 
 void
-Lead::screenRemoved(QScreen* screen)
+App::screenRemoved(QScreen* screen)
 {
     // thats the easiest way
     reloadScreens();
@@ -88,7 +93,7 @@ Lead::screenRemoved(QScreen* screen)
 
 
 void
-Lead::reloadScreens()
+App::reloadScreens()
 {
     qDeleteAll(sensors);
     sensors.clear();
@@ -98,7 +103,7 @@ Lead::reloadScreens()
 
 
 void
-Lead::loadScreens()
+App::loadScreens()
 {
     foreach (QScreen* screen, screens()) 
     {
@@ -108,9 +113,9 @@ Lead::loadScreens()
 
 
 void
-Lead::loadScreen(QScreen* screen)
+App::loadScreen(QScreen* screen)
 {
-    qDebug() << "Lead::loadScreen() " << screen->name();
+    qDebug() << "App::loadScreen() " << screen->name();
 
     QRect rec = screen->geometry();
     
@@ -126,7 +131,7 @@ Lead::loadScreen(QScreen* screen)
 
 
 void
-Lead::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
+App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 {
 
     QString key = screen->name() + "/" + name;
@@ -134,7 +139,7 @@ Lead::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 
     if (!settings.contains(key) )
     {
-        qDebug() << "Lead::loadSensor() key " << name << " not found";
+        qDebug() << "App::loadSensor() key " << name << " not found";
         
         // restore missing key
         settings.setValue(key, QString());
@@ -143,12 +148,15 @@ Lead::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 
     if (settings.value(key).toString().isEmpty())
     {
-        qDebug() << "Lead::loadSensor() key " << name << " is empty";
+        qDebug() << "App::loadSensor() key " << name << " is empty";
         return;
     }
     
 
     // create sensor and save in list so we can delete all sensors on delete
 
-    sensors.append( new lead::Sensor(x, y, w, h, settings.value(key).toString()) );
+    sensors.append( new Sensor(x, y, w, h, settings.value(key).toString()) );
 }
+
+
+} // namespace

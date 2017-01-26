@@ -1,4 +1,5 @@
 /*
+
 MIT License
 
 Copyright (c) 2017 Noah Andreas
@@ -20,6 +21,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 */
 
 
@@ -34,18 +36,21 @@ SOFTWARE.
 #include <QFileSystemWatcher>
 
 
-class Lead : public QApplication
+namespace Lead {
+
+
+class App : public QApplication
 {
     Q_OBJECT
 
 public:
-    explicit Lead(int &argc, char** argv);
-    ~Lead();
+    explicit App(int &argc, char** argv);
+    ~App();
 
 private:
     QSettings settings;
     QFileSystemWatcher watcher;
-    QList<lead::Sensor*> sensors;
+    QList<Sensor*> sensors;
 
     void screenAdded(QScreen* screen);
     void screenRemoved(QScreen* screen);
@@ -59,3 +64,6 @@ public slots:
     void fileChanged(QString fileName);
 
 };
+
+
+} // namespace

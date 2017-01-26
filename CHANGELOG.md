@@ -1,6 +1,7 @@
 # 01/26/2017
 - removed prefix "mlde" from name to make the component independent from a project name.
 - default settings-path changed from `~/.config/mlde/lead.conf` to `~/.config/lead/lead.conf`. Please change your config-path.
+- changed namespace from MLDE to Lead
 
 # 01/24/2017
 - changed built-tool back to makefile

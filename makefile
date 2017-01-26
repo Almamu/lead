@@ -12,7 +12,7 @@ MKDIR = mkdir -p $(dir $@)
 .SECONDARY:
 
 
-data/usr/bin/lead: build/lead.o build/sensor.o build/main.o build/moc_lead.o build/moc_sensor.o
+data/usr/bin/lead: build/main.o build/app.o build/sensor.o build/moc_app.o build/moc_sensor.o
 	$(MKDIR)
 	$(LINKER)
 
