@@ -33,6 +33,7 @@ SOFTWARE.
 
 #define SENSOR_WIDTH 5
 #define SENSOR_HEIGHT 5
+#define POLL_RATE 10
 
 namespace Lead {
 
@@ -40,10 +41,14 @@ namespace Lead {
 App::App(int &argc, char** argv) :
     QApplication(argc, argv),
     settings("lead", "lead"),
-    watcher()
+    watcher(),
+    pollTimer(this)
 {   
     loadScreens();
     watchSettings();
+
+    // bind timer
+    connect(&pollTimer, SIGNAL(timeout()), this, SLOT(pollMouse()));
 }
 
 
@@ -76,6 +81,33 @@ App::fileChanged(QString fileName)
 
     // simply reload everything
     reloadScreens();
+}
+
+void
+App::pollMouse()
+{
+    lastMousePosition = currentMousePosition;
+    currentMousePosition = QCursor::pos();
+
+    if(
+        currentMousePosition.x() > (1080 + 1800) && currentMousePosition.x() < (1080 + 1920 + 150) &&
+        currentMousePosition.y() > 300 && currentMousePosition.y() < 380
+        )
+    {
+        qDebug() << lastMousePosition.x() << "," << lastMousePosition.y() << ":" << currentMousePosition.x() << "," << currentMousePosition.y();
+    }
+
+    if(lastMousePosition.x() != currentMousePosition.x() || lastMousePosition.y() != currentMousePosition.y())
+    {
+        // check if the mouse movement intersects with the hot corners we're supporting
+        foreach(Sensor* sensor, sensors)
+        {
+            if(sensor->check(lastMousePosition, currentMousePosition) == true)
+            {
+                qDebug() << "Sensor fired!";
+            }
+        }
+    }
 }
 
 
@@ -111,6 +143,8 @@ App::loadScreens()
     {
         loadScreen(screen);
     }
+
+    loadTimer();
 }
 
 
@@ -158,6 +192,38 @@ App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
     // create sensor and save in list so we can delete all sensors on delete
 
     sensors.append( new Sensor(x, y, w, h, settings.value(key).toString()) );
+}
+
+void
+App::loadTimer()
+{
+    int interval = POLL_RATE;
+
+    if (!settings.contains("general/timer") )
+    {
+        qDebug() << "App::loadTimer() setting default timer msec to " << POLL_RATE << " msecs";
+
+        settings.setValue("general/timer", QString::number(POLL_RATE));
+    }
+    else if (settings.value("general/timer").toInt() <= 0)
+    {
+        qDebug() << "App::loadTimer() mouse poll rate too fast, adjusting to 10 ms again";
+    }
+    else
+    {
+        interval = settings.value("general/timer").toInt();
+        qDebug() << "App::loadTimer() mouse poll rate set to " << interval;
+    }
+
+    // set timer interval
+    this->pollTimer.setInterval(interval);
+    this->pollTimer.setSingleShot(false);
+
+    // run the timer if it isn't running already
+    if(this->pollTimer.isActive() == false)
+    {
+        this->pollTimer.start();
+    }
 }
 
 

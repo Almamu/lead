@@ -34,30 +34,116 @@ SOFTWARE.
 namespace Lead {
 
 
-Sensor::Sensor(int x, int y, int w, int h, QString action):
-    QWidget()
+Sensor::Sensor(QRect rect, QString action)
 {
-    qDebug() << "lead::Sensor() " << x << "," << y << "," << w << "," << h << " : " << action;
+    qDebug() << "lead::Sensor() " << rect.x() << "," << rect.y() << "," << rect.width() << "," << rect.height() << " : " << action;
 
-    this->action = action;    
-
-    //setStyleSheet("background-color:red;");
-    setGeometry(x, y, w, h);    
-    setAttribute(Qt::WA_TranslucentBackground, true);    
-    setWindowFlags(windowFlags() | Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
-
-    show();
+    this->action = action;
+    this->rect = rect;
 }
 
+Sensor::Sensor(int x, int y, int w, int h, QString action)
+{
+    this->rect = {x, y, w, h};
+
+    qDebug() << "lead::Sensor() " << this->rect.x() << "," << this->rect.y() << "," << this->rect.width() << "," << this->rect.height() << " : " << action;
+
+    this->action = action;
+}
 
 Sensor::~Sensor()
 {}
 
+bool
+Sensor::check(QPoint& start, QPoint& end)
+{
+    bool collide = false;
+
+    // top line
+    collide = collide || this->checkLines(
+        start.x(), start.y(),
+        end.x(), end.y(),
+        this->rect.x(), this->rect.y(),
+        this->rect.x() + this->rect.width(), this->rect.y() + this->rect.height()
+    );
+
+    // right line
+    collide = collide || this->checkLines(
+        start.x(), start.y(),
+        end.x(), end.y(),
+        this->rect.x() + this->rect.width(), this->rect.y(),
+        this->rect.x() + this->rect.width(), this->rect.y() + this->rect.height()
+    );
+
+    // bottom line
+    collide = collide || this->checkLines(
+        start.x(), start.y(),
+        end.x(), end.y(),
+        this->rect.x(), this->rect.y() + this->rect.height(),
+        this->rect.x() + this->rect.width(), this->rect.y() + this->rect.height()
+    );
+
+    // left line
+    collide = collide || this->checkLines(
+        start.x(), start.y(),
+        end.x(), end.y(),
+        this->rect.x(), this->rect.y(),
+        this->rect.x(), this->rect.y() + this->rect.height()
+    );
+
+    if (collide)
+    {
+        if (this->lastCheckStatus == false)
+        {
+            this->fire();
+            this->lastCheckStatus = true;
+
+            return true;
+        }
+    }
+    else
+    {
+        this->lastCheckStatus = false;
+    }
+
+    return false;
+}
+
+bool
+Sensor::checkLines(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
+{
+    int xcmp = x3 - x1, ycmp = y3 - y1;
+    int xr = x2 - x1, yr = y2 - y1;
+    int xs = x4 - x3, ys = y4 - y3;
+
+    int cmpxr = xcmp * yr - ycmp * xr;
+    int cmpxs = xcmp * ys - ycmp * xs;
+    int rxs = xr * ys - yr * xs;
+
+    if(cmpxr == 0)
+    {
+        return (
+            ((x3 - x1 < 0) != (x3 - x2 < 0)) ||
+            ((y3 - y1 < 0) != (y3 - y2 < 0))
+        );
+    }
+
+    if(rxs == 0)
+    {
+        return false;
+    }
+
+    int rxsr = ((rxs > 0) ? rxs : -rxs);
+    int t = cmpxs * rxsr;
+    int u = cmpxr * rxsr;
+
+    return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
+}
 
 void
-Sensor::enterEvent(QEvent * event)
+Sensor::fire()
 {
-    qDebug() << "lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " action: " << this->action;
+    qDebug() << "lead::Sensor::fire() " << this->rect.x() << ":" << this->rect.y() << " action: " << this->action;
 
     QProcess::startDetached(action);
 }

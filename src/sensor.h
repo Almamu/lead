@@ -30,24 +30,31 @@ SOFTWARE.
 
 #include <QWidget>
 #include <QScreen>
+#include <QRect>
+#include <QPoint>
 
 
 namespace Lead {
 
 
-class Sensor : public QWidget
+class Sensor
 {
-    Q_OBJECT
 
 public:
-    explicit Sensor(int x, int y, int w, int h, QString action);
+    explicit Sensor(QRect rec, QString action);
+    Sensor(int x, int y, int w, int h, QString action);
     ~Sensor();
 
-protected:
-    void enterEvent(QEvent * event);
+    bool check(QPoint& start, QPoint& end);
 
 private:
+	bool checkLines(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
+	bool lastCheckStatus;
+	void fire();
+
     QString action;
+
+    QRect rect;
 
 };
 

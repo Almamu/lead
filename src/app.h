@@ -34,6 +34,7 @@ SOFTWARE.
 #include <QSettings>
 #include <QScreen>
 #include <QFileSystemWatcher>
+#include <QTimer>
 
 
 namespace Lead {
@@ -51,6 +52,9 @@ private:
     QSettings settings;
     QFileSystemWatcher watcher;
     QList<Sensor*> sensors;
+    QTimer pollTimer;
+    QPoint lastMousePosition;
+    QPoint currentMousePosition;
 
     void screenAdded(QScreen* screen);
     void screenRemoved(QScreen* screen);
@@ -59,9 +63,11 @@ private:
     void loadScreen(QScreen* screen);    
     void loadSensor(QScreen* screen, QString name, int x, int y, int w, int h);
     void reloadScreens();
+    void loadTimer();
     
 public slots:
     void fileChanged(QString fileName);
+    void pollMouse();
 
 };
 
