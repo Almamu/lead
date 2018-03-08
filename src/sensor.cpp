@@ -35,20 +35,24 @@ namespace Lead {
 
 
 Sensor::Sensor(QRect rect, QString action)
+    :process()
 {
     qDebug() << "lead::Sensor() " << rect.x() << "," << rect.y() << "," << rect.width() << "," << rect.height() << " : " << action;
 
     this->action = action;
     this->rect = rect;
+    this->process.setProgram(this->action);
 }
 
 Sensor::Sensor(int x, int y, int w, int h, QString action)
+    :process()
 {
     this->rect = {x, y, w, h};
 
     qDebug() << "lead::Sensor() " << this->rect.x() << "," << this->rect.y() << "," << this->rect.width() << "," << this->rect.height() << " : " << action;
 
     this->action = action;
+    this->process.setProgram(this->action);
 }
 
 Sensor::~Sensor()
@@ -58,7 +62,7 @@ bool
 Sensor::check(QPoint& start, QPoint& end)
 {
     /// TODO: CHECK DIRECTION TOO
-    
+
     bool collide = false;
 
     // top line
@@ -137,7 +141,10 @@ Sensor::fire()
 {
     qDebug() << "lead::Sensor::fire() " << this->rect.x() << ":" << this->rect.y() << " action: " << this->action;
 
-    QProcess::startDetached(action);
+    if(this->process.processId() == 0)
+    {
+        this->process.start();
+    }
 }
 
 

@@ -32,6 +32,7 @@ SOFTWARE.
 #include <QScreen>
 #include <QRect>
 #include <QPoint>
+#include <QProcess>
 
 
 namespace Lead {
@@ -52,10 +53,10 @@ private:
 	bool lastCheckStatus;
 	void fire();
 
+	QProcess process;
     QString action;
 
     QRect rect;
-
 };
 
 
