@@ -125,13 +125,26 @@ Sensor::check(QPoint& start, QPoint& end)
 bool
 Sensor::checkLines(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
 {
-    // calculate the direction of the lines
-    int uA1 = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
-    int uB1 = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
-    int uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((uA1 == 0) ? 1 : uA1);
-    int uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((uB1 == 0) ? 1 : uB1);
+    /* https://stackoverflow.com/questions/5514366/how-to-know-if-a-line-intersects-a-rectangle */
+    int q = (y1 - y3) * (x4 - x3) - (x1 - x3) * (y4 - y3);
+    int d = (x2 - x1) * (y4 - y3) - (y2 - y1) * (x4 - x3);
 
-    return (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1);
+    if( d == 0 )
+    {
+        return false;
+    }
+
+    int r = q / d;
+
+    q = (y1 - y3) * (x2 - x1) - (x1 - x3) * (y2 - y1);
+    int s = q / d;
+
+    if( r < 0 || r > 1 || s < 0 || s > 1 )
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void
