@@ -41,7 +41,6 @@ Sensor::Sensor(QRect rect, QString action)
 
     this->action = action;
     this->rect = rect;
-    this->process.setProgram(this->action);
 }
 
 Sensor::Sensor(int x, int y, int w, int h, QString action)
@@ -52,7 +51,6 @@ Sensor::Sensor(int x, int y, int w, int h, QString action)
     qDebug() << "lead::Sensor() " << this->rect.x() << "," << this->rect.y() << "," << this->rect.width() << "," << this->rect.height() << " : " << action;
 
     this->action = action;
-    this->process.setProgram(this->action);
 }
 
 Sensor::~Sensor()
@@ -139,11 +137,10 @@ Sensor::checkLines(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y
 void
 Sensor::fire()
 {
-    qDebug() << "lead::Sensor::fire() " << this->rect.x() << ":" << this->rect.y() << " action: " << this->action;
-
     if(this->process.processId() == 0)
     {
-        this->process.start();
+        this->process.start(this->action);
+        qDebug() << "lead::Sensor::fire() " << this->rect.x() << ":" << this->rect.y() << " action: " << this->action;
     }
 }
 

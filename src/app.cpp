@@ -89,14 +89,6 @@ App::pollMouse()
     lastMousePosition = currentMousePosition;
     currentMousePosition = QCursor::pos();
 
-    if(
-        currentMousePosition.x() > (1080 + 1800) && currentMousePosition.x() < (1080 + 1920 + 150) &&
-        currentMousePosition.y() > 300 && currentMousePosition.y() < 380
-        )
-    {
-        qDebug() << lastMousePosition.x() << "," << lastMousePosition.y() << ":" << currentMousePosition.x() << "," << currentMousePosition.y();
-    }
-
     if(lastMousePosition.x() != currentMousePosition.x() || lastMousePosition.y() != currentMousePosition.y())
     {
         // check if the mouse movement intersects with the hot corners we're supporting
