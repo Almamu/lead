@@ -104,7 +104,8 @@ App::pollMouse()
         {
             if(sensor->check(lastMousePosition, currentMousePosition) == true)
             {
-                qDebug() << "Sensor fired!";
+                // stop iteration
+                return;
             }
         }
     }
@@ -155,7 +156,7 @@ App::loadScreen(QScreen* screen)
 
     QRect rec = screen->geometry();
     
-    loadSensor(screen, "top", rec.x() + (rec.width() / 3), rec.y(), rec.width() / 3, SENSOR_WIDTH);
+    loadSensor(screen, "top", rec.x() + (rec.width() / 3), rec.y(), rec.width() / 3, SENSOR_HEIGHT);
     loadSensor(screen, "right", rec.x() + rec.width() - SENSOR_WIDTH, rec.y() + (rec.height() / 3), SENSOR_WIDTH, rec.height() / 3);
     loadSensor(screen, "bottom", rec.x() + (rec.width() / 3), rec.y() + rec.height() - SENSOR_HEIGHT, rec.width() / 3, SENSOR_HEIGHT);
     loadSensor(screen, "left", 0, rec.x() + (rec.height() / 3), SENSOR_WIDTH, rec.height() / 3);
@@ -207,7 +208,7 @@ App::loadTimer()
     }
     else if (settings.value("general/timer").toInt() <= 0)
     {
-        qDebug() << "App::loadTimer() mouse poll rate too fast, adjusting to 10 ms again";
+        qDebug() << "App::loadTimer() mouse poll rate too fast, adjusting to " << POLL_RATE << " ms again";
     }
     else
     {

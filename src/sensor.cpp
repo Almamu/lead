@@ -57,6 +57,8 @@ Sensor::~Sensor()
 bool
 Sensor::check(QPoint& start, QPoint& end)
 {
+    /// TODO: CHECK DIRECTION TOO
+    
     bool collide = false;
 
     // top line
@@ -91,6 +93,15 @@ Sensor::check(QPoint& start, QPoint& end)
         this->rect.x(), this->rect.y() + this->rect.height()
     );
 
+    // finally check if the last point is in the rectangle itself
+    collide = collide || (
+            end.x() >= this->rect.x() &&
+            end.x() <= (this->rect.x() + this->rect.width()) &&
+            end.y() >= this->rect.y() &&
+            end.y() <= (this->rect.y() + this->rect.height()
+        )
+    );
+
     if (collide)
     {
         if (this->lastCheckStatus == false)
@@ -112,32 +123,13 @@ Sensor::check(QPoint& start, QPoint& end)
 bool
 Sensor::checkLines(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
 {
-    int xcmp = x3 - x1, ycmp = y3 - y1;
-    int xr = x2 - x1, yr = y2 - y1;
-    int xs = x4 - x3, ys = y4 - y3;
+    // calculate the direction of the lines
+    int uA1 = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
+    int uB1 = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
+    int uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((uA1 == 0) ? 1 : uA1);
+    int uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((uB1 == 0) ? 1 : uB1);
 
-    int cmpxr = xcmp * yr - ycmp * xr;
-    int cmpxs = xcmp * ys - ycmp * xs;
-    int rxs = xr * ys - yr * xs;
-
-    if(cmpxr == 0)
-    {
-        return (
-            ((x3 - x1 < 0) != (x3 - x2 < 0)) ||
-            ((y3 - y1 < 0) != (y3 - y2 < 0))
-        );
-    }
-
-    if(rxs == 0)
-    {
-        return false;
-    }
-
-    int rxsr = ((rxs > 0) ? rxs : -rxs);
-    int t = cmpxs * rxsr;
-    int u = cmpxr * rxsr;
-
-    return (t >= 0) && (t <= 1) && (u >= 0) && (u <= 1);
+    return (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1);
 }
 
 void
