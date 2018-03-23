@@ -31,6 +31,8 @@ SOFTWARE.
 #include <QScreen>
 #include <QFileSystemWatcher>
 
+#define SENSOR_WIDTH 5
+#define SENSOR_HEIGHT 5
 
 namespace Lead {
 
@@ -119,14 +121,14 @@ App::loadScreen(QScreen* screen)
 
     QRect rec = screen->geometry();
     
-    loadSensor(screen, "top", rec.width() / 3, 0, rec.width() / 3, 10);
-    loadSensor(screen, "right", rec.width() - 1, rec.height() / 3, 1, rec.height() / 3);
-    loadSensor(screen, "bottom", rec.width() / 3, rec.height() - 1, rec.width() / 3, 1);
-    loadSensor(screen, "left", 0, rec.height() / 3, 1, rec.height() / 3);
-    loadSensor(screen, "topLeft", 0, 0, 1, 1);
-    loadSensor(screen, "topRight", rec.width() - 1, 0, 1, 1);
-    loadSensor(screen, "bottomRight", rec.width() - 1, rec.height() - 1, 1, 1);
-    loadSensor(screen, "bottomLeft", 0, rec.height() - 1, 1, 1);
+    loadSensor(screen, "top", rec.x() + (rec.width() / 3), rec.y(), rec.width() / 3, SENSOR_WIDTH);
+    loadSensor(screen, "right", rec.x() + rec.width() - SENSOR_WIDTH, rec.y() + (rec.height() / 3), SENSOR_WIDTH, rec.height() / 3);
+    loadSensor(screen, "bottom", rec.x() + (rec.width() / 3), rec.y() + rec.height() - SENSOR_HEIGHT, rec.width() / 3, SENSOR_HEIGHT);
+    loadSensor(screen, "left", 0, rec.x() + (rec.height() / 3), SENSOR_WIDTH, rec.height() / 3);
+    loadSensor(screen, "topLeft", rec.x(), rec.y(), SENSOR_WIDTH, SENSOR_HEIGHT);
+    loadSensor(screen, "topRight", rec.x() + rec.width() - SENSOR_WIDTH, rec.y(), SENSOR_WIDTH, SENSOR_HEIGHT);
+    loadSensor(screen, "bottomRight", rec.x() + rec.width() - SENSOR_WIDTH, rec.y() + rec.height() - SENSOR_HEIGHT, SENSOR_WIDTH, SENSOR_HEIGHT);
+    loadSensor(screen, "bottomLeft", rec.x(), rec.y() + rec.height() - SENSOR_HEIGHT, SENSOR_WIDTH, SENSOR_HEIGHT);
 }
 
 
