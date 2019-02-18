@@ -34,12 +34,18 @@ SOFTWARE.
 namespace Lead {
 
 
-Sensor::Sensor(int x, int y, int w, int h, QString action):
-    QWidget()
+Sensor::Sensor(int x, int y, int w, int h, QString action, int interval):
+    QWidget(),
+    action(action),
+    interval(interval)
 {
-    qDebug() << "lead::Sensor() " << x << "," << y << "," << w << "," << h << " : " << action;
+    qDebug() << "lead::Sensor() " << x << "," << y << "," << w << "," << h << " : action=" << action << " : interval=" << interval;
 
-    this->action = action;    
+    this->timer = new QTimer(this);
+    this->timer->setSingleShot(true);
+    this->timer->setInterval(interval);
+
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(activate()));
 
     //setStyleSheet("background-color:red;");
     setGeometry(x, y, w, h);    
@@ -51,13 +57,33 @@ Sensor::Sensor(int x, int y, int w, int h, QString action):
 
 
 Sensor::~Sensor()
-{}
+{
+    delete this->timer;
+}
 
 
 void
 Sensor::enterEvent(QEvent * event)
 {
-    qDebug() << "lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " action: " << this->action;
+    qDebug() << "lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " interval: " << this->interval;
+
+    this->timer->start();
+}
+
+
+void
+Sensor::leaveEvent(QEvent * event)
+{
+    qDebug() << "lead::Sensor::leaveEvent() " << this->x() << ":" << this->y() << " interval: " << this->interval;
+
+    this->timer->stop();
+}
+
+
+void
+Sensor::activate() 
+{
+    qDebug() << "lead::Sensor::activate() " << this->x() << ":" << this->y() << " action: " << this->action;
 
     QProcess::startDetached(action);
 }

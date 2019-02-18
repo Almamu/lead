@@ -30,6 +30,7 @@ SOFTWARE.
 
 #include <QWidget>
 #include <QScreen>
+#include <QTimer>
 
 
 namespace Lead {
@@ -40,14 +41,21 @@ class Sensor : public QWidget
     Q_OBJECT
 
 public:
-    explicit Sensor(int x, int y, int w, int h, QString action);
+    explicit Sensor(int x, int y, int w, int h, QString action, int interval);
     ~Sensor();
 
 protected:
     void enterEvent(QEvent * event);
+    void leaveEvent(QEvent * event);
 
 private:
     QString action;
+    QTimer *timer;
+    int interval;
+
+public slots:
+    void activate();
+
 
 };
 

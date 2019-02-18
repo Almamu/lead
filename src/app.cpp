@@ -30,6 +30,7 @@ SOFTWARE.
 #include <QDebug>
 #include <QScreen>
 #include <QFileSystemWatcher>
+#include <QVariant>
 
 #define SENSOR_WIDTH 5
 #define SENSOR_HEIGHT 5
@@ -136,28 +137,39 @@ void
 App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 {
 
-    QString key = screen->name() + "/" + name;
+    QString action = screen->name() + "/" + name + "-" + "action";
+    QString interval = screen->name() + "/" + name + "-" + "interval";
 
-
-    if (!settings.contains(key) )
+    if (!settings.contains(interval))
     {
-        qDebug() << "App::loadSensor() key " << name << " not found";
+        qDebug() << "App::loadSensor() interval for " << name << " not found; setting to 0";
+
+        // set default
+        settings.setValue(interval, QVariant(0));
+    }
+
+    if (!settings.contains(action))
+    {
+        qDebug() << "App::loadSensor() action for " << name << " not found; creating empty key";
         
-        // restore missing key
-        settings.setValue(key, QString());
+        // restore missing action
+        settings.setValue(action, QString());
         return;
     }
 
-    if (settings.value(key).toString().isEmpty())
+    if (settings.value(action).toString().isEmpty())
     {
-        qDebug() << "App::loadSensor() key " << name << " is empty";
+        qDebug() << "App::loadSensor() action for " << name << " is empty";
         return;
     }
     
 
     // create sensor and save in list so we can delete all sensors on delete
 
-    sensors.append( new Sensor(x, y, w, h, settings.value(key).toString()) );
+    qDebug() << "App::loadSensor() action for " << name << " is " << settings.value(action).toString();
+    qDebug() << "App::loadSensor() interval for " << name << " is " << settings.value(interval).toInt();
+
+    sensors.append( new Sensor(x, y, w, h, settings.value(action).toString(), settings.value(interval).toInt()) );
 }
 
 
