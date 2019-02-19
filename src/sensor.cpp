@@ -34,18 +34,32 @@ SOFTWARE.
 namespace Lead {
 
 
-Sensor::Sensor(int x, int y, int w, int h, QString action, int interval):
+Sensor::Sensor(int x, int y, int w, int h, QString enterAction, QString exitAction, int enterInterval, int exitInterval):
     QWidget(),
-    action(action),
-    interval(interval)
+    enterAction(enterAction),
+    exitAction(exitAction),
+    enterInterval(enterInterval),
+    exitInterval(exitInterval)
 {
-    qDebug() << "lead::Sensor() " << x << "," << y << "," << w << "," << h << " : action=" << action << " : interval=" << interval;
+    qDebug()
+        << "lead::Sensor() " << x << "," << y << "," << w << "," << h
+        << " : enterAction=" << enterAction
+        << " : exitAction=" << exitAction
+        << " : enterInterval=" << enterInterval
+        << " : exitInterval=" << exitInterval;
 
-    this->timer = new QTimer(this);
-    this->timer->setSingleShot(true);
-    this->timer->setInterval(interval);
+    this->canTriggerExit = false;
 
-    connect(this->timer, SIGNAL(timeout()), this, SLOT(activate()));
+    this->enterTimer = new QTimer(this);
+    this->enterTimer->setSingleShot(true);
+    this->enterTimer->setInterval(enterInterval);
+
+    this->exitTimer = new QTimer (this);
+    this->exitTimer->setSingleShot (true);
+    this->exitTimer->setInterval (exitInterval);
+
+    connect(this->enterTimer, SIGNAL(timeout()), this, SLOT(activateEnter()));
+    connect(this->exitTimer, SIGNAL(timeout()), this, SLOT(activateExit()));
 
     //setStyleSheet("background-color:red;");
     setGeometry(x, y, w, h);    
@@ -58,34 +72,56 @@ Sensor::Sensor(int x, int y, int w, int h, QString action, int interval):
 
 Sensor::~Sensor()
 {
-    delete this->timer;
+    delete this->enterTimer;
+    delete this->exitTimer;
 }
 
 
 void
 Sensor::enterEvent(QEvent * event)
 {
-    qDebug() << "lead::Sensor::enterEvent() " << this->x() << ":" << this->y() << " interval: " << this->interval;
+    qDebug()
+        << "lead::Sensor::enterEvent() "<< this->x() << ":" << this->y()
+        << " enterInterval: " << this->enterTimer
+        << " exitInterval: " << this->exitTimer;
 
-    this->timer->start();
+    this->enterTimer->start();
+    this->exitTimer->start();
 }
 
 
 void
 Sensor::leaveEvent(QEvent * event)
 {
-    qDebug() << "lead::Sensor::leaveEvent() " << this->x() << ":" << this->y() << " interval: " << this->interval;
+    qDebug()
+            << "lead::Sensor::leaveEvent() "<< this->x() << ":" << this->y()
+            << " enterInterval: " << this->enterTimer
+            << " exitInterval: " << this->exitTimer;
 
-    this->timer->stop();
+    if (this->canTriggerExit)
+    {
+        QProcess::startDetached(exitAction);
+    }
+
+    this->enterTimer->stop();
+    this->exitTimer->stop();
+    this->canTriggerExit = false;
 }
 
 
 void
-Sensor::activate() 
+Sensor::activateEnter()
 {
-    qDebug() << "lead::Sensor::activate() " << this->x() << ":" << this->y() << " action: " << this->action;
+    qDebug() << "lead::Sensor::activateEnter() " << this->x() << ":" << this->y() << " action: " << this->enterAction;
 
-    QProcess::startDetached(action);
+    QProcess::startDetached(enterAction);
+}
+
+void Sensor::activateExit()
+{
+    qDebug () << "lead::Sensor::activateExit() " << this->x() << ":" << this->y() << " action: " << this->exitAction << " can run now";
+
+    this->canTriggerExit = true;
 }
 
 

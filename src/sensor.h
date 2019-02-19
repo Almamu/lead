@@ -41,7 +41,7 @@ class Sensor : public QWidget
     Q_OBJECT
 
 public:
-    explicit Sensor(int x, int y, int w, int h, QString action, int interval);
+    explicit Sensor(int x, int y, int w, int h, QString enterAction, QString exitAction, int enterInterval, int exitInterval);
     ~Sensor();
 
 protected:
@@ -49,12 +49,17 @@ protected:
     void leaveEvent(QEvent * event);
 
 private:
-    QString action;
-    QTimer *timer;
-    int interval;
+    QString enterAction;
+    QString exitAction;
+    QTimer *enterTimer;
+    QTimer *exitTimer;
+    int enterInterval;
+    int exitInterval;
+    bool canTriggerExit;
 
 public slots:
-    void activate();
+    void activateEnter();
+    void activateExit();
 
 
 };

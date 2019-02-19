@@ -143,29 +143,56 @@ App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
         return;
     }
 
-    QString sensorName = settings.value (sensorNameKey).toString ();
-    QString sensorAction = sensorName + "/action";
-    QString sensorDelay = sensorName + "/delay";
+    QString sensorName          = settings.value (sensorNameKey).toString ();
+    QString sensorEnterAction   = sensorName + "/enterAction";
+    QString sensorExitAction    = sensorName + "/exitAction";
+    QString sensorEnterDelay    = sensorName + "/enterDelay";
+    QString sensorExitDelay     = sensorName + "/exitDelay";
+    int emptyCount              = 0;
 
     if (sensorName.isEmpty () == true)
     {
         return;
     }
 
-    if (!settings.contains (sensorAction))
+    if (!settings.contains (sensorEnterAction))
     {
-        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have action; ignoring...";
+        emptyCount ++;
+    }
+
+    if (!settings.contains (sensorExitAction))
+    {
+        emptyCount ++;
+    }
+
+    if (emptyCount == 2)
+    {
+        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have any action in it, ignoring...";
         return;
     }
 
-    if (!settings.contains (sensorDelay))
+    if (!settings.contains (sensorEnterDelay))
     {
         qDebug () << "App::loadSensor () sensor " << sensorName << " does not have delay; setting to 0";
-        settings.setValue (sensorDelay, QVariant (0));
+        settings.setValue (sensorEnterDelay, QVariant (0));
+    }
+
+    if (!settings.contains (sensorExitDelay))
+    {
+        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have exit delay; setting to 0";
+        settings.setValue (sensorExitDelay, QVariant (0));
     }
 
     qDebug () << "App::loadSensor () loaded sensor " << sensorName << " on screen " + screen->name();
-    sensors.append (new Sensor (x, y, w, h, settings.value (sensorAction).toString (), settings.value (sensorDelay).toInt ()));
+    sensors.append (
+            new Sensor (
+                x, y, w, h,
+                settings.value (sensorEnterAction).toString (),
+                settings.value (sensorExitAction).toString (),
+                settings.value (sensorEnterDelay).toInt (),
+                settings.value (sensorExitDelay).toInt ()
+            )
+    );
 }
 
 
