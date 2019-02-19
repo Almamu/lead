@@ -167,7 +167,8 @@ App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 
     if (emptyCount == 2)
     {
-        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have any action in it, ignoring...";
+        // to not make this a breaking change, keep compatibility with old configurations
+        sensors.append (new Sensor (x, y, w, h, sensorName, "", 0, 0));
         return;
     }
 
