@@ -53,30 +53,27 @@ On the first run lead will look into these dirs for a conf-file. The first one f
 If none of these exists, it will create `~/.config/lead/lead.conf` with default values for each screen, ie:
 
     [eDP1]
-    bottom-action=
-    bottom-interval=0
-    bottomLeft-action=
-    bottomLeft-interval=0
-    bottomRight-action=
-    bottomRight-interval=0
-    left-action=
-    left-interval=0
-    right-action=
-    right-interval=0
-    top-action=
-    top-interval=0
-    topLeft-action=
-    topLeft-interval=0
-    topRight-action=
-    topRight-interval=0
+    bottom=
+    bottomLeft=
+    bottomRight=
+    left=
+    right=
+    top=
+    topLeft=
+    topRight=
 
-To enable a action for a sensor, simply add a command to the corner or side:
+Sensors have their own sections in the configuration, so if you want to add an action to a corner you can do so:
+    [eDP1]
+    bottomLeft=SensorName
 
-    bottomLeft-action=chromium
+    [SensorName]
+    enterAction=chromium
+    exitAction=firefox
+    enterDelay=5000
+    exitDelay=1000
 
-The intervals are set in milliseconds. For example, to set chromium to open only after the mouse has been in the corner for 1 second, do:
-
-    bottomLeft-interval=1000
+Delays are configured in miliseconds and dictate the amount of time the mouse has to be in the sensor to trigger the specific action.
+In the case of exitDelay, this delay affects how much time the mouse has to be in the sensor for it to trigger the exitAction when the mouse moves out of the sensor.
 
 The configuration file is monitored and changes are applied automatically.
 
