@@ -136,36 +136,36 @@ App::loadScreen(QScreen* screen)
 void
 App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
 {
-    QString sensorsListKey = screen->name() + "/" + name;
+    QString sensorNameKey = screen->name() + "/" + name;
 
-    if (settings.contains (sensorsListKey) == false)
+    if (settings.contains (sensorNameKey) == false)
     {
         return;
     }
 
-    QStringList sensorsList = settings.value (sensorsListKey).toString ().split (';', QString::SkipEmptyParts);
+    QString sensorName = settings.value (sensorNameKey).toString ();
+    QString sensorAction = sensorName + "/action";
+    QString sensorDelay = sensorName + "/delay";
 
-    for (int i = 0; i < sensorsList.size (); i ++)
+    if (sensorName.isEmpty () == true)
     {
-        QString sensorName = sensorsList.at (i);
-        QString sensorAction = sensorName + "/action";
-        QString sensorDelay = sensorName + "/delay";
-
-        if (!settings.contains (sensorAction))
-        {
-            qDebug () << "App::loadSensor () sensor " << sensorName << " does not have action; ignoring...";
-            continue;
-        }
-
-        if (!settings.contains (sensorDelay))
-        {
-            qDebug () << "App::loadSensor () sensor " << sensorName << " does not have delay; setting to 0";
-            settings.setValue (sensorDelay, QVariant (0));
-        }
-
-        qDebug () << "App::loadSensor () loaded sensor " << sensorName << " on screen " + screen->name();
-        sensors.append (new Sensor (x, y, w, h, settings.value (sensorAction).toString (), settings.value (sensorDelay).toInt ()));
+        return;
     }
+
+    if (!settings.contains (sensorAction))
+    {
+        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have action; ignoring...";
+        return;
+    }
+
+    if (!settings.contains (sensorDelay))
+    {
+        qDebug () << "App::loadSensor () sensor " << sensorName << " does not have delay; setting to 0";
+        settings.setValue (sensorDelay, QVariant (0));
+    }
+
+    qDebug () << "App::loadSensor () loaded sensor " << sensorName << " on screen " + screen->name();
+    sensors.append (new Sensor (x, y, w, h, settings.value (sensorAction).toString (), settings.value (sensorDelay).toInt ()));
 }
 
 
