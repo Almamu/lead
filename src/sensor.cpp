@@ -130,7 +130,7 @@ Sensor::activateEnter()
 
     if (this->debugMode)
         setStyleSheet ("background-color: green");
-    
+
     QProcess::startDetached(enterAction);
 }
 

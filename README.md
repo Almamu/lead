@@ -64,6 +64,7 @@ If none of these exists, it will create `~/.config/lead/lead.conf` with default 
     topRight=
 
 Sensors have their own sections in the configuration, so if you want to add an action to a corner you can do so:
+
     [eDP1]
     bottomLeft=SensorName
 
@@ -83,6 +84,7 @@ If still your program doesn't run please check lead's output to get a better ide
 
 In debug mode the screen names are shown on the top-left corner of each screen.
 To enable the debug mode add the following section in the config file:
+
     [systemsettings]
     debug=1
 
