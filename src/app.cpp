@@ -27,6 +27,7 @@ SOFTWARE.
 
 #include "app.h"
 #include "sensor.h"
+#include "screenname.h"
 #include <QDebug>
 #include <QScreen>
 #include <QFileSystemWatcher>
@@ -34,6 +35,7 @@ SOFTWARE.
 
 #define SENSOR_WIDTH 5
 #define SENSOR_HEIGHT 5
+#define DEBUG_MODE_KEY "systemsettings/debug"
 
 namespace Lead {
 
@@ -51,6 +53,7 @@ App::App(int &argc, char** argv) :
 App::~App()
 {
     qDeleteAll(sensors);
+    qDeleteAll(screenNames);
 }
 
 
@@ -99,7 +102,9 @@ void
 App::reloadScreens()
 {
     qDeleteAll(sensors);
+    qDeleteAll(screenNames);
     sensors.clear();
+    screenNames.clear();
 
     loadScreens();
 }
@@ -108,6 +113,14 @@ App::reloadScreens()
 void
 App::loadScreens()
 {
+    // first load the debug mode flag
+    this->debugMode = false;
+
+    if (settings.contains (DEBUG_MODE_KEY))
+    {
+        this->debugMode = settings.value (DEBUG_MODE_KEY).toInt () > 0;
+    }
+
     foreach (QScreen* screen, screens()) 
     {
         loadScreen(screen);
@@ -130,6 +143,8 @@ App::loadScreen(QScreen* screen)
     loadSensor(screen, "topRight", rec.x() + rec.width() - SENSOR_WIDTH, rec.y(), SENSOR_WIDTH, SENSOR_HEIGHT);
     loadSensor(screen, "bottomRight", rec.x() + rec.width() - SENSOR_WIDTH, rec.y() + rec.height() - SENSOR_HEIGHT, SENSOR_WIDTH, SENSOR_HEIGHT);
     loadSensor(screen, "bottomLeft", rec.x(), rec.y() + rec.height() - SENSOR_HEIGHT, SENSOR_WIDTH, SENSOR_HEIGHT);
+
+    loadScreenNameDisplay (screen);
 }
 
 
@@ -168,7 +183,7 @@ App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
     if (emptyCount == 2)
     {
         // to not make this a breaking change, keep compatibility with old configurations
-        sensors.append (new Sensor (x, y, w, h, sensorName, "", 0, 0));
+        sensors.append (new Sensor (x, y, w, h, sensorName, "", 0, 0, this->debugMode));
         return;
     }
 
@@ -191,9 +206,23 @@ App::loadSensor(QScreen* screen, QString name, int x, int y, int w, int h)
                 settings.value (sensorEnterAction).toString (),
                 settings.value (sensorExitAction).toString (),
                 settings.value (sensorEnterDelay).toInt (),
-                settings.value (sensorExitDelay).toInt ()
+                settings.value (sensorExitDelay).toInt (),
+                this->debugMode
             )
     );
+}
+
+void
+App::loadScreenNameDisplay(QScreen* screen)
+{
+    if (!this->debugMode)
+    {
+        return;
+    }
+
+    qDebug () << "App::loadScreenNameDisplay () loading widget for screen " << screen->name ();
+
+    screenNames.append (new ScreenName (screen));
 }
 
 

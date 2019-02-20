@@ -2,8 +2,9 @@
 
 This fork adds support for specifying an interval to wait before the action is triggered. There may be more improvements in the future.
 
-![Screenshot of lead](https://github.com/mlde/lead/blob/master/screenshot.png)
-> Despite the screenshot, the sensors are only 1px in size and invisible.
+![Screenshot of lead](https://github.com/almamu/lead/blob/master/screenshots/screenshot1.png)
+![Screenshot of lead](https://github.com/almamu/lead/blob/master/screenshots/screenshot2.png)
+> Sensors are not displayed unless the debug mode is enabled
 
 
 ### Features
@@ -74,6 +75,16 @@ Sensors have their own sections in the configuration, so if you want to add an a
 
 Delays are configured in miliseconds and dictate the amount of time the mouse has to be in the sensor to trigger the specific action.
 In the case of exitDelay, this delay affects how much time the mouse has to be in the sensor for it to trigger the exitAction when the mouse moves out of the sensor.
+
+If you are not sure why a sensor isn't properly firing you can enable the debug mode to visualize what their position is, your screen names and the status they're in.
+Each configured sensor will be displayed in a red color when the sensor is waiting for the mouse to enter it.
+Once the mouse is in, the sensor will turn to yellow, this indicates that it is waiting for the enter delay timer to end. Once the timer ends the sensor will turn green and the program should be run.
+If still your program doesn't run please check lead's output to get a better idea of what's happening.
+
+In debug mode the screen names are shown on the top-left corner of each screen.
+To enable the debug mode add the following section in the config file:
+    [systemsettings]
+    debug=1
 
 The configuration file is monitored and changes are applied automatically.
 

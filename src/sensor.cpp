@@ -34,12 +34,13 @@ SOFTWARE.
 namespace Lead {
 
 
-Sensor::Sensor(int x, int y, int w, int h, QString enterAction, QString exitAction, int enterInterval, int exitInterval):
+Sensor::Sensor(int x, int y, int w, int h, QString enterAction, QString exitAction, int enterInterval, int exitInterval, bool debugMode):
     QWidget(),
     enterAction(enterAction),
     exitAction(exitAction),
     enterInterval(enterInterval),
-    exitInterval(exitInterval)
+    exitInterval(exitInterval),
+    debugMode(debugMode)
 {
     qDebug()
         << "lead::Sensor() " << x << "," << y << "," << w << "," << h
@@ -61,9 +62,16 @@ Sensor::Sensor(int x, int y, int w, int h, QString enterAction, QString exitActi
     connect(this->enterTimer, SIGNAL(timeout()), this, SLOT(activateEnter()));
     connect(this->exitTimer, SIGNAL(timeout()), this, SLOT(activateExit()));
 
-    //setStyleSheet("background-color:red;");
-    setGeometry(x, y, w, h);    
-    setAttribute(Qt::WA_TranslucentBackground, true);    
+    if (this->debugMode)
+    {
+        setStyleSheet ("background-color: red");
+    }
+    else
+    {
+        setAttribute(Qt::WA_TranslucentBackground, true);
+    }
+
+    setGeometry(x, y, w, h);
     setWindowFlags(windowFlags() | Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint );
 
     show();
@@ -87,6 +95,9 @@ Sensor::enterEvent(QEvent * event)
 
     this->enterTimer->start();
     this->exitTimer->start();
+
+    if (this->debugMode)
+        setStyleSheet ("background-color: yellow");
 }
 
 
@@ -103,6 +114,9 @@ Sensor::leaveEvent(QEvent * event)
         QProcess::startDetached(exitAction);
     }
 
+    if (this->debugMode)
+        setStyleSheet ("background-color: red");
+
     this->enterTimer->stop();
     this->exitTimer->stop();
     this->canTriggerExit = false;
@@ -114,6 +128,9 @@ Sensor::activateEnter()
 {
     qDebug() << "lead::Sensor::activateEnter() " << this->x() << ":" << this->y() << " action: " << this->enterAction;
 
+    if (this->debugMode)
+        setStyleSheet ("background-color: green");
+    
     QProcess::startDetached(enterAction);
 }
 
